@@ -1,7 +1,7 @@
 // EditPostPage.jsx
 import React, { useState, useEffect, useMemo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import axiosInstance from "../utils/axiosInstance.js";
+import api from "../utils/axiosInstance.js";
 import toast from "react-hot-toast";
 import { AiOutlineDelete } from "react-icons/ai";
 import { FaImage, FaUserTag, FaSmile } from "react-icons/fa";
@@ -43,7 +43,7 @@ const EditPostPage = () => {
       try {
         const token = localStorage.getItem("token");
         if (!token) return;
-        const res = await axiosInstance.get("/api/users/me", {
+        const res = await api.get("/api/users/me", {
           headers: { Authorization: `Bearer ${token}` },
         });
         setUser(res.data);
@@ -59,7 +59,7 @@ const EditPostPage = () => {
     const fetchPost = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await axiosInstance.get(`/api/posts/${postId}`, {
+        const res = await api.get(`/api/posts/${postId}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setContent(res.data.content || "");
@@ -82,7 +82,7 @@ const EditPostPage = () => {
     const fetchUsers = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await axiosInstance.get("/api/users", {
+        const res = await api.get("/api/users", {
           headers: { Authorization: `Bearer ${token}` },
         });
         setAllUsers(Array.isArray(res.data) ? res.data : []);
@@ -130,7 +130,7 @@ const EditPostPage = () => {
       // upload preview (you already have /api/upload)
       const formData = new FormData();
       formData.append("image", file);
-      const upload = await axiosInstance.post("/api/upload", formData, {
+      const upload = await api.post("/api/upload", formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
@@ -200,7 +200,7 @@ const EditPostPage = () => {
         // optionally append empty gif to explicitly clear, but we use delete_gif flag instead
       }
 
-      await axiosInstance.put(`/api/posts/${postId}`, fd, {
+      await api.put(`/api/posts/${postId}`, fd, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",

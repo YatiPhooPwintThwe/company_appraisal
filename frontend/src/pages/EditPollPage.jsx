@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import axiosInstance from "../utils/axiosInstance.js";
+import api from "../utils/axiosInstance.js";
 import toast from "react-hot-toast";
 
 const EditPollPage = () => {
@@ -18,7 +18,7 @@ const EditPollPage = () => {
   useEffect(() => {
     const fetchPoll = async () => {
       try {
-        const res = await axiosInstance.get(`/api/polls/${pollId}`, { headers });
+        const res = await api.get(`/api/polls/${pollId}`, { headers });
         const poll = res.data;
         setTitle(poll.title);
         setDescription(poll.description || "");
@@ -49,7 +49,7 @@ const EditPollPage = () => {
     if (!endAt.trim()) return toast.error("End date required");
 
     try {
-      await axiosInstance.put(
+      await api.put(
         `/api/polls/${pollId}`,
         {
           title: title.trim(),

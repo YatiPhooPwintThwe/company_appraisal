@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axiosInstance from "../utils/axiosInstance.js";
+import api from "../utils/axiosInstance.js";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
@@ -13,7 +13,7 @@ const NotificationPage = () => {
   useEffect(() => {
     const fetchNotifications = async () => {
       try {
-        const res = await axiosInstance.get("/api/notifications", {
+        const res = await api.get("/api/notifications", {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
@@ -47,7 +47,7 @@ const NotificationPage = () => {
   // -----------------------
   const markAsRead = async (notifId) => {
     try {
-      await axiosInstance.post(
+      await api.post(
         `/api/notifications/${notifId}/read`,
         {},
         {

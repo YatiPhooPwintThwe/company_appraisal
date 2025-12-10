@@ -1,12 +1,11 @@
-// src/utils/axiosInstance.js
 import axios from "axios";
 
-const axiosInstance = axios.create({
-   baseURL:"http://localhost:5000/api",
+const api = axios.create({
+  baseURL: import.meta.env.VITE_API_URL || "/api", // fallback for local dev with proxy
 });
 
-// Add a request interceptor to attach token dynamically
-axiosInstance.interceptors.request.use(
+// Attach token automatically
+api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -17,4 +16,4 @@ axiosInstance.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-export default axiosInstance;
+export default api;

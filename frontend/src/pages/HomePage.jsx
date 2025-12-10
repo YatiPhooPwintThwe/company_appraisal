@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import axiosInstance from "../utils/axiosInstance.js";
+import api from "../utils/axiosInstance.js";
 import toast from "react-hot-toast";
 import { AiOutlineEdit, AiOutlineDelete } from "react-icons/ai";
 
@@ -48,7 +48,7 @@ const HomePage = () => {
   useEffect(() => {
     const fetchCurrentUser = async () => {
       try {
-        const res = await axiosInstance.get("/api/users/me", { headers });
+        const res = await api.get("/api/users/me", { headers });
         setCurrentUser(res.data);
       } catch (err) {
         console.error(err);
@@ -60,8 +60,8 @@ const HomePage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const pollsRes = await axiosInstance.get("/api/polls", { headers });
-        const postsRes = await axiosInstance.get("/api/posts", { headers });
+        const pollsRes = await api.get("/api/polls", { headers });
+        const postsRes = await api.get("/api/posts", { headers });
 
         const pollsData = pollsRes.data || [];
         setPolls(pollsData);
@@ -98,19 +98,19 @@ const HomePage = () => {
   const submitVote = async () => {
     if (!selectedOption || !selectedPoll) return;
     try {
-      await axiosInstance.post(
+      await api.post(
         `/api/polls/${selectedPoll.id}/vote`,
         { option_id: parseInt(selectedOption, 10) },
         { headers }
       );
-      const pollRes = await axiosInstance.get("/api/polls", { headers });
+      const pollRes = await api.get("/api/polls", { headers });
       setPolls(pollRes.data);
       const updatedPoll = pollRes.data.find((p) => p.id === selectedPoll.id);
       setSelectedPoll(updatedPoll);
       setHasVoted(true);
     } catch {
       alert("You already voted");
-      const pollRes = await axiosInstance.get("/api/polls", { headers });
+      const pollRes = await api.get("/api/polls", { headers });
       setPolls(pollRes.data);
       const updatedPoll = pollRes.data.find((p) => p.id === selectedPoll.id);
       setSelectedPoll(updatedPoll);
@@ -119,7 +119,7 @@ const HomePage = () => {
 
   const toggleLike = async (postId) => {
     try {
-      const res = await axiosInstance.post(
+      const res = await api.post(
         `/api/posts/${postId}/like`,
         {},
         { headers }
@@ -137,7 +137,7 @@ const HomePage = () => {
   const handleDelete = async (postId) => {
     if (!window.confirm("Delete this post?")) return;
     try {
-      await axiosInstance.delete(`/api/posts/${postId}`, { headers });
+      await api.delete(`/api/posts/${postId}`, { headers });
       setPosts((prev) => prev.filter((p) => p.id !== postId));
       toast.success("Post deleted");
     } catch {
@@ -147,8 +147,8 @@ const HomePage = () => {
 
   const togglePin = async (postId) => {
     try {
-      await axiosInstance.post(`/api/posts/${postId}/toggle-pin`, {}, { headers });
-      const postsRes = await axiosInstance.get("/api/posts", { headers });
+      await api.post(`/api/posts/${postId}/toggle-pin`, {}, { headers });
+      const postsRes = await api.get("/api/posts", { headers });
       setPosts(postsRes.data);
     } catch {
       toast.error("Unable to pin");
@@ -245,7 +245,7 @@ const HomePage = () => {
                     onClick={async () => {
                       if (!window.confirm("Delete this poll?")) return;
                       try {
-                        await axiosInstance.delete(`/api/polls/${selectedPoll.id}`, {
+                        await api.delete(`/api/polls/${selectedPoll.id}`, {
                           headers,
                         });
                         toast.success("Poll deleted");
