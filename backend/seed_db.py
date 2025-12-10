@@ -9,11 +9,6 @@ from extensions import bcrypt
 
 CSV_FILENAME = os.path.join(os.path.dirname(__file__), "employees.csv")  # change if name different
 
-def hash_password(plain):
-    hashed = bcrypt.generate_password_hash(plain)
-    if isinstance(hashed, bytes):
-        return hashed.decode("utf-8")
-    return str(hashed)
 
 
 def create_user_from_row(row):
@@ -39,7 +34,7 @@ def create_user_from_row(row):
     user = User(
         login_id=employee_id,
         name=name,
-        password_hash=hash_password(password),
+        password=password,
         role=role,
         position=position,
         department=department,
