@@ -30,7 +30,7 @@ def register_routes(app, db, PERSPECTIVE_API_KEY):
     # -----------------------
     # Authentication
     # -----------------------
-    @app.route('/login', methods=['POST'])
+    @app.route('/api/login', methods=['POST'])
     def login():
         data = request.get_json() or {}
         login_id = data.get("login_id")
