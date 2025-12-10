@@ -13,8 +13,7 @@ __pycache__/
 # Instance folder (databases, config files)
 instance/
 
-# CSV files (optional if you don't want to track them)
-*.csv
+
 
 # Flask-Migrate cache (optional)
 migrations/__pycache__/
