@@ -34,8 +34,9 @@ bcrypt.init_app(app)
 jwt = JWTManager(app)
 migrate = Migrate(app, db)
 
-frontend_folder = os.path.join(os.getcwd(),"..","frontend")
-dist_folder = os.path.join(frontend_folder,"dist")
+backend_dir = os.path.dirname(os.path.abspath(__file__))
+frontend_folder = os.path.join(backend_dir, "..", "frontend")
+dist_folder = os.path.join(frontend_folder, "dist")
 @app.route("/", defaults={"filename": ""})
 @app.route("/<path:filename>")
 def index(filename):
