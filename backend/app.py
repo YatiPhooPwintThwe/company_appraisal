@@ -38,6 +38,10 @@ from routes import register_routes
 PERSPECTIVE_API_KEY = os.getenv("PERSPECTIVE_API_KEY")
 register_routes(app, db=db, PERSPECTIVE_API_KEY=PERSPECTIVE_API_KEY)
 
+@app.route("/login", methods=["GET"])
+def login_page():
+    return send_from_directory(app.static_folder, "index.html")
+
 # --- catch-all for React frontend ---
 @app.route("/", defaults={"path": ""})
 @app.route("/<path:path>")
