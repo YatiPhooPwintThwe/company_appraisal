@@ -30,7 +30,7 @@ const LoginPage = () => {
     setLoading(true);
 
     try {
-      const res = await api.post("/login", form);
+      const res = await api.post("/api/login", form);
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("user", JSON.stringify(res.data.user));
       toast.success("Login successful!");
