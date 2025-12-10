@@ -108,7 +108,7 @@ const ReplyPage = () => {
   useEffect(() => {
     const fetchCurrentUser = async () => {
       try {
-        const res = await api.get("/api/users/me", {
+        const res = await api.get("/users/me", {
           headers: authHeaders,
         });
         setCurrentUser(res.data);
@@ -123,8 +123,8 @@ const ReplyPage = () => {
     const fetchPostAndReplies = async () => {
       try {
         const [postRes, repliesRes] = await Promise.all([
-          api.get(`/api/posts/${postId}`, { headers: authHeaders }),
-          api.get(`/api/posts/${postId}/replies`, { headers: authHeaders }),
+          api.get(`/posts/${postId}`, { headers: authHeaders }),
+          api.get(`/posts/${postId}/replies`, { headers: authHeaders }),
         ]);
         setPost(postRes.data);
         setReplies(repliesRes.data.replies || []);
@@ -144,7 +144,7 @@ const ReplyPage = () => {
     try {
       const formData = new FormData();
       formData.append("image", file);
-      const res = await api.post("/api/upload", formData, {
+      const res = await api.post("/upload", formData, {
         headers: authHeaders,
       });
       // res.data.url expected
@@ -199,7 +199,7 @@ const ReplyPage = () => {
       if (gifUrl) fd.append("gif", gifUrl); // send as 'gif' (backend expects 'gif' for form)
       if (deleteGif) fd.append("delete_gif", "true");
 
-      const res = await api.post("/api/replies", fd, {
+      const res = await api.post("/replies", fd, {
         headers: authHeaders,
       });
       // server now returns reply JSON including user
@@ -246,7 +246,7 @@ const ReplyPage = () => {
       if (editingGifUrl) fd.append("gif", editingGifUrl);
       else if (editingDeleteGif) fd.append("delete_gif", "true");
 
-      const res = await api.put(`/api/replies/${replyId}`, fd, {
+      const res = await api.put(`/replies/${replyId}`, fd, {
         headers: authHeaders,
       });
       setReplies((prev) => prev.map((r) => (r.id === replyId ? res.data : r)));
@@ -269,7 +269,7 @@ const ReplyPage = () => {
   const deleteReply = async (replyId) => {
     if (!confirm("Delete reply?")) return;
     try {
-      await api.delete(`/api/replies/${replyId}`, { headers: authHeaders });
+      await api.delete(`/replies/${replyId}`, { headers: authHeaders });
       setReplies((prev) => prev.filter((r) => r.id !== replyId));
       toast.success("Reply deleted");
     } catch (err) {
@@ -281,7 +281,7 @@ const ReplyPage = () => {
   const toggleLike = async (replyId) => {
     try {
       const res = await api.post(
-        `/api/replies/${replyId}/like`,
+        `/replies/${replyId}/like`,
         {},
         { headers: authHeaders }
       );

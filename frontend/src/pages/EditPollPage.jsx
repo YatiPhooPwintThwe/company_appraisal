@@ -18,7 +18,7 @@ const EditPollPage = () => {
   useEffect(() => {
     const fetchPoll = async () => {
       try {
-        const res = await api.get(`/api/polls/${pollId}`, { headers });
+        const res = await api.get(`/polls/${pollId}`, { headers });
         const poll = res.data;
         setTitle(poll.title);
         setDescription(poll.description || "");
@@ -50,7 +50,7 @@ const EditPollPage = () => {
 
     try {
       await api.put(
-        `/api/polls/${pollId}`,
+        `/polls/${pollId}`,
         {
           title: title.trim(),
           description: description.trim(),

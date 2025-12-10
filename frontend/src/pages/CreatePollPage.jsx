@@ -54,7 +54,7 @@ const CreatePollPage = () => {
 
     try {
       await api.post(
-        "/api/polls",
+        "/polls",
         {
           title: title.trim(),
           description: description.trim(),

@@ -34,7 +34,7 @@ const CreatePostPage = () => {
       try {
         const token = localStorage.getItem("token");
         if (!token) return;
-        const res = await api.get("/api/users/me", {
+        const res = await api.get("/users/me", {
           headers: { Authorization: `Bearer ${token}` },
         });
         setUser(res.data);
@@ -51,7 +51,7 @@ const CreatePostPage = () => {
     const fetchUsers = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await api.get("/api/users", {
+        const res = await api.get("/users", {
           headers: { Authorization: `Bearer ${token}` },
         });
         setAllUsers(Array.isArray(res.data) ? res.data : []);
@@ -76,7 +76,7 @@ const CreatePostPage = () => {
       const formData = new FormData();
       formData.append("image", file);
 
-      const res = await api.post("/api/upload", formData, {
+      const res = await api.post("/upload", formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
@@ -166,7 +166,7 @@ const CreatePostPage = () => {
         formData.append("gif", gifUrl);
       }
 
-      await api.post("/api/posts", formData, {
+      await api.post("/posts", formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",

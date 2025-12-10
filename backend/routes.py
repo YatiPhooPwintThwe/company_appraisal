@@ -16,7 +16,7 @@ import cloudinary.uploader
 
 MAX_CONTENT_LENGTH = 2000
 
-def register_routes(app, db, PERSPECTIVE_API_KEY):
+def register_routes(app, db, PERSPECTIVE__KEY):
     if db is None:
         raise RuntimeError("register_routes requires a SQLAlchemy 'db' parameter")
 
@@ -30,7 +30,7 @@ def register_routes(app, db, PERSPECTIVE_API_KEY):
     # -----------------------
     # Authentication
     # -----------------------
-    @app.route('/api/login', methods=['POST'])
+    @app.route('/login', methods=['POST'])
     def login():
         data = request.get_json() or {}
         login_id = data.get("login_id")
@@ -48,13 +48,13 @@ def register_routes(app, db, PERSPECTIVE_API_KEY):
     # -----------------------
     # Users
     # -----------------------
-    @app.route('/api/users', methods=['GET'])
+    @app.route('/users', methods=['GET'])
     @jwt_required()
     def list_users():
         users = User.query.order_by(User.name.asc()).all()
         return jsonify([u.to_json() for u in users]), 200
 
-    @app.route('/api/users/<int:user_id>', methods=['GET'])
+    @app.route('/users/<int:user_id>', methods=['GET'])
     @jwt_required()
     def get_user(user_id):
         user = User.query.get(user_id)
@@ -62,7 +62,7 @@ def register_routes(app, db, PERSPECTIVE_API_KEY):
             return jsonify({"error": "User not found"}), 404
         return jsonify(user.to_json()), 200
 
-    @app.route('/api/users/search', methods=['GET'])
+    @app.route('/users/search', methods=['GET'])
     @jwt_required()
     def search_users():
         q = (request.args.get('q') or "").strip()
@@ -88,7 +88,7 @@ def register_routes(app, db, PERSPECTIVE_API_KEY):
         ]
         return jsonify(results), 200
 
-    @app.route("/api/users/me", methods=["GET"])
+    @app.route("/users/me", methods=["GET"])
     @jwt_required()
     def get_current_user():
         user_id = int(get_jwt_identity())
@@ -100,7 +100,7 @@ def register_routes(app, db, PERSPECTIVE_API_KEY):
     # -----------------------
     # Posts
     # -----------------------
-    @app.route("/api/upload", methods=["POST"])
+    @app.route("/upload", methods=["POST"])
     @jwt_required()
     def upload_image():
 
@@ -116,7 +116,7 @@ def register_routes(app, db, PERSPECTIVE_API_KEY):
             return jsonify({"error": str(e)}), 500
 
 
-    @app.route("/api/posts", methods=["GET"])
+    @app.route("/posts", methods=["GET"])
     @jwt_required()
     def get_posts():
         logged_in_user_id = int(get_jwt_identity())
@@ -135,7 +135,7 @@ def register_routes(app, db, PERSPECTIVE_API_KEY):
             })
         return jsonify(results), 200
 
-    @app.route("/api/posts/<int:post_id>", methods=["GET"])
+    @app.route("/posts/<int:post_id>", methods=["GET"])
     @jwt_required()
     def get_post(post_id):
         logged_in_user_id = int(get_jwt_identity())
@@ -154,7 +154,7 @@ def register_routes(app, db, PERSPECTIVE_API_KEY):
 
         }), 200
 
-    @app.route("/api/posts", methods=["POST"])
+    @app.route("/posts", methods=["POST"])
     @jwt_required()
     def create_post():
         logged_in_user_id = int(get_jwt_identity())
@@ -229,7 +229,7 @@ def register_routes(app, db, PERSPECTIVE_API_KEY):
 
         return jsonify(post.to_json()), 201
 
-    @app.route("/api/posts/<int:post_id>", methods=["PUT"])
+    @app.route("/posts/<int:post_id>", methods=["PUT"])
     @jwt_required()
     def edit_post(post_id):
         logged_in_user_id = int(get_jwt_identity())
@@ -302,7 +302,7 @@ def register_routes(app, db, PERSPECTIVE_API_KEY):
         return jsonify(response), 200
 
 
-    @app.route("/api/posts/<int:post_id>", methods=["DELETE"])
+    @app.route("/posts/<int:post_id>", methods=["DELETE"])
     @jwt_required()
     def delete_post(post_id):
         logged_in_user_id = int(get_jwt_identity())
@@ -317,7 +317,7 @@ def register_routes(app, db, PERSPECTIVE_API_KEY):
         commit_or_rollback()
         return jsonify({"message": "Post deleted"}), 200
 
-    @app.route("/api/posts/<int:post_id>/like", methods=["POST"])
+    @app.route("/posts/<int:post_id>/like", methods=["POST"])
     @jwt_required()
     def toggle_post_like(post_id):
         logged_in_user_id = int(get_jwt_identity())
@@ -340,7 +340,7 @@ def register_routes(app, db, PERSPECTIVE_API_KEY):
         return jsonify({"message": message, "likeCount": like_count}), 200
 
 
-    @app.route("/api/posts/<int:post_id>/toggle-pin", methods=["POST"])
+    @app.route("/posts/<int:post_id>/toggle-pin", methods=["POST"])
     @jwt_required()
     def toggle_pin(post_id):
         logged_in_user_id = int(get_jwt_identity())
@@ -358,7 +358,7 @@ def register_routes(app, db, PERSPECTIVE_API_KEY):
     # -----------------------
     # Replies
     # -----------------------
-    @app.route("/api/posts/<int:post_id>/replies", methods=["GET"])
+    @app.route("/posts/<int:post_id>/replies", methods=["GET"])
     @jwt_required()
     def get_post_replies(post_id):
         logged_in_user_id = int(get_jwt_identity())
@@ -382,7 +382,7 @@ def register_routes(app, db, PERSPECTIVE_API_KEY):
         }), 200
 
         
-    @app.route("/api/replies", methods=["POST"])
+    @app.route("/replies", methods=["POST"])
     @jwt_required()
     def create_reply():
         logged_in_user_id = int(get_jwt_identity())
@@ -461,7 +461,7 @@ def register_routes(app, db, PERSPECTIVE_API_KEY):
         return jsonify(reply.to_json()), 201
         return jsonify(reply_json), 201
 
-    @app.route("/api/replies/<int:reply_id>", methods=["PUT"])
+    @app.route("/replies/<int:reply_id>", methods=["PUT"])
     @jwt_required()
     def edit_reply(reply_id):
         logged_in_user_id = int(get_jwt_identity())
@@ -532,7 +532,7 @@ def register_routes(app, db, PERSPECTIVE_API_KEY):
        
         return jsonify(reply.to_json()), 200
 
-    @app.route("/api/replies/<int:reply_id>", methods=["DELETE"])
+    @app.route("/replies/<int:reply_id>", methods=["DELETE"])
     @jwt_required()
     def delete_reply(reply_id):
         logged_in_user_id = int(get_jwt_identity())
@@ -549,7 +549,7 @@ def register_routes(app, db, PERSPECTIVE_API_KEY):
         commit_or_rollback()
         return jsonify({"message": "Reply deleted"}), 200
 
-    @app.route("/api/replies/<int:reply_id>/like", methods=["POST"])
+    @app.route("/replies/<int:reply_id>/like", methods=["POST"])
     @jwt_required()
     def toggle_reply_like(reply_id):
         logged_in_user_id = int(get_jwt_identity())
@@ -574,14 +574,14 @@ def register_routes(app, db, PERSPECTIVE_API_KEY):
     # -----------------------
     # Polls
     # -----------------------
-    @app.route("/api/polls", methods=["GET"])
+    @app.route("/polls", methods=["GET"])
     @jwt_required()
     def get_all_polls():
         polls = Poll.query.order_by(Poll.created_at.desc()).all()
         polls_data = [p.to_json(include_votes=True) for p in polls]
         return jsonify(polls_data), 200
 
-    @app.route("/api/polls/active", methods=["GET"])
+    @app.route("/polls/active", methods=["GET"])
     @jwt_required()
     def get_active_poll():
         poll = Poll.query.filter_by(is_active=True).order_by(Poll.created_at.desc()).first()
@@ -592,7 +592,7 @@ def register_routes(app, db, PERSPECTIVE_API_KEY):
        
         return jsonify(poll_data), 200
 
-    @app.route("/api/polls", methods=["POST"])
+    @app.route("/polls", methods=["POST"])
     @jwt_required()
     def create_poll():
         logged_in_user_id = int(get_jwt_identity())
@@ -635,7 +635,7 @@ def register_routes(app, db, PERSPECTIVE_API_KEY):
 
         return jsonify(poll_data), 201
 
-    @app.route("/api/polls/<int:poll_id>", methods=["GET"])
+    @app.route("/polls/<int:poll_id>", methods=["GET"])
     @jwt_required()
     def get_poll(poll_id):
         poll = Poll.query.get(poll_id)
@@ -645,7 +645,7 @@ def register_routes(app, db, PERSPECTIVE_API_KEY):
        
         return jsonify(poll_data), 200
 
-    @app.route("/api/polls/<int:poll_id>", methods=["DELETE"])
+    @app.route("/polls/<int:poll_id>", methods=["DELETE"])
     @jwt_required()
     def delete_poll(poll_id):
         logged_in_user_id = int(get_jwt_identity())
@@ -661,7 +661,7 @@ def register_routes(app, db, PERSPECTIVE_API_KEY):
         commit_or_rollback()
         return jsonify({"message": "Poll deleted"}), 200
 
-    @app.route("/api/polls/<int:poll_id>/vote", methods=["POST"])
+    @app.route("/polls/<int:poll_id>/vote", methods=["POST"])
     @jwt_required()
     def vote_poll(poll_id):
         logged_in_user_id = int(get_jwt_identity())
@@ -701,7 +701,7 @@ def register_routes(app, db, PERSPECTIVE_API_KEY):
         poll_data = poll.to_json(include_votes=True)
         return jsonify(poll_data), 200
     
-    @app.route("/api/polls/<int:poll_id>", methods=["PUT"])
+    @app.route("/polls/<int:poll_id>", methods=["PUT"])
     @jwt_required()
     def edit_poll(poll_id):
 
@@ -741,7 +741,7 @@ def register_routes(app, db, PERSPECTIVE_API_KEY):
     # -----------------------
     # Notifications
     # -----------------------
-    @app.route("/api/notifications", methods=["GET"])
+    @app.route("/notifications", methods=["GET"])
     @jwt_required()
     def get_notifications():
         logged_in_user_id = int(get_jwt_identity())
@@ -792,7 +792,7 @@ def register_routes(app, db, PERSPECTIVE_API_KEY):
 
         return jsonify(results), 200
 
-    @app.route("/api/notifications/<int:notif_id>/read", methods=["POST"])
+    @app.route("/notifications/<int:notif_id>/read", methods=["POST"])
     @jwt_required()
     def mark_notification_read(notif_id):
         logged_in_user_id = int(get_jwt_identity())
@@ -804,7 +804,7 @@ def register_routes(app, db, PERSPECTIVE_API_KEY):
         return jsonify({"message": "Notification marked as read"}), 200
 
     # DELETE ALL NOTIFICATIONS for the logged-in user
-    @app.route("/api/notifications/clear", methods=["DELETE"])
+    @app.route("/notifications/clear", methods=["DELETE"])
     @jwt_required()
     def clear_notifications():
         user_id = int(get_jwt_identity())

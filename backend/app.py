@@ -40,11 +40,7 @@ dist_folder = os.path.join(frontend_folder, "dist")
 @app.route("/", defaults={"path": ""})
 @app.route("/<path:path>")
 def serve(path):
-    # 1️⃣ If the path is an API route, let Flask handle it normally
-    if path.startswith("api/"):
-        return {"message": "API route not found"}, 404
-
-    # 2️⃣ If the file exists in frontend_dist, serve it
+   
     file_path = os.path.join(app.static_folder, path)
     if path and os.path.exists(file_path):
         return send_from_directory(app.static_folder, path)

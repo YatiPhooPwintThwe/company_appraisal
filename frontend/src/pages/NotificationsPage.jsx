@@ -13,7 +13,7 @@ const NotificationPage = () => {
   useEffect(() => {
     const fetchNotifications = async () => {
       try {
-        const res = await api.get("/api/notifications", {
+        const res = await api.get("/notifications", {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
@@ -48,7 +48,7 @@ const NotificationPage = () => {
   const markAsRead = async (notifId) => {
     try {
       await api.post(
-        `/api/notifications/${notifId}/read`,
+        `/notifications/${notifId}/read`,
         {},
         {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
