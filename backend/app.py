@@ -14,7 +14,7 @@ load_dotenv()
 # --- setup app ---
 app = Flask(
     __name__,
-    static_folder="statics",     # folder on disk: backend/statics
+    static_folder="frontend_dist",     # folder on disk: backend/statics
     static_url_path=""   # served at http(s)://<host>:<port>/statics/...
 )
 
@@ -44,7 +44,6 @@ def serve(path):
     if path and os.path.exists(file_path):
         return send_from_directory(app.static_folder, path)
     return send_from_directory(app.static_folder, "index.html")
-
 # Perspective API key
 PERSPECTIVE_API_KEY = os.getenv("PERSPECTIVE_API_KEY")
 
