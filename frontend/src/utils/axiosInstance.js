@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "", // fallback for local dev with proxy
+  baseURL: "https://appraisal-1lzx.onrender.com", // NO /api
 });
 
 // Attach token automatically
