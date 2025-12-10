@@ -1,0 +1,22 @@
+# Ignore Python bytecode
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignore virtual environment
+.venv/
+
+# Ignore environment variables
+.env
+
+# Instance folder (databases, config files)
+instance/
+
+# CSV files (optional if you don't want to track them)
+*.csv
+
+# Flask-Migrate cache (optional)
+migrations/__pycache__/
+
+.vscode/settings.json
