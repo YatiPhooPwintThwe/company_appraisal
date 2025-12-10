@@ -1,9 +1,9 @@
-import { useState} from "react";
+import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import backgroundImg from "../assets/logo.png";
 import { Eye, EyeOff } from "lucide-react";
-import axiosInstance from "../utils/axiosInstance.js";
+import axios from "axios";
 const LoginPage = () => {
   const navigate = useNavigate();
 
@@ -14,7 +14,7 @@ const LoginPage = () => {
 
   const [showPw, setShowPw] = useState(false);
   const [loading, setLoading] = useState(false);
- 
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
@@ -30,7 +30,7 @@ const LoginPage = () => {
     setLoading(true);
 
     try {
-      const res = await axiosInstance.post("/login", form);
+      const res = await axios.post("/api/login", form);
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("user", JSON.stringify(res.data.user));
       toast.success("Login successful!");
