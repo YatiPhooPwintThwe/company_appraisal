@@ -1,4 +1,4 @@
-from extensions import db, bcrypt
+from extensions import db
 from flask import request
 from datetime import timezone, datetime
 from flask_jwt_extended import get_jwt_identity
@@ -17,7 +17,7 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     login_id = db.Column(db.String(50), unique=True, nullable=False)
     name = db.Column(db.String(100), nullable=False)
-    password_hash = db.Column(db.String(256), nullable=False)
+    password = db.Column(db.String(256), nullable=False)
     role = db.Column(db.String(20), nullable=False, default="employee")
     avatar_url = db.Column(db.String(255))
     email = db.Column(db.String(150), unique=True, nullable=True)
@@ -36,10 +36,10 @@ class User(db.Model):
     likes = db.relationship("Like", backref="user", lazy="select", cascade="all, delete-orphan")
 
     def set_password(self, password: str):
-        self.password_hash = bcrypt.generate_password_hash(password).decode("utf-8")
+        self.password = password
 
     def check_password(self, password: str) -> bool:
-        return bcrypt.check_password_hash(self.password_hash, password)
+        return self.password == password
 
     def role_lower(self):
         return (self.role or "").lower()

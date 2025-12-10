@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "https://appraisal-1lzx.onrender.com/api", // NO /api
+  baseURL: "http://127.0.0.1:5000", // NO /api
 });
 
 // Attach token automatically
