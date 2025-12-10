@@ -39,13 +39,13 @@ migrate = Migrate(app, db)
 
 # --- Auto-seed users if table is empty ---
 from models import User
-from seed_users import seed_users  # your seeding script
+from seed_db import seed_users  # your seeding script
 
 with app.app_context():
     if User.query.count() == 0:
         print("No users found. Seeding database...")
         seed_users()
-        
+
 # --- Register API routes ---
 from routes import register_routes
 PERSPECTIVE_API_KEY = os.getenv("PERSPECTIVE_API_KEY")
