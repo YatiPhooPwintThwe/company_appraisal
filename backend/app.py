@@ -1,9 +1,9 @@
-from flask import Flask, send_from_directory
+from flask import Flask, send_from_directory, jsonify
 from extensions import db, bcrypt 
 from flask_cors import CORS
 import os
 from dotenv import load_dotenv
-from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
+from flask_jwt_extended import JWTManager
 from flask_migrate import Migrate
 import cloudinary
 import cloudinary.uploader
@@ -11,11 +11,10 @@ import cloudinary.api
 
 load_dotenv()
 
-# --- setup app ---
 app = Flask(
     __name__,
-    static_folder="frontend_dist",     # folder on disk: backend/statics
-    static_url_path=""   # served at http(s)://<host>:<port>/statics/...
+    static_folder="frontend_dist",
+    static_url_path=""
 )
 
 CORS(app)
@@ -34,25 +33,30 @@ bcrypt.init_app(app)
 jwt = JWTManager(app)
 migrate = Migrate(app, db)
 
-backend_dir = os.path.dirname(os.path.abspath(__file__))
-frontend_folder = os.path.join(backend_dir, "..", "frontend")
-dist_folder = os.path.join(frontend_folder, "dist")
+# --- register API routes first ---
+from routes import register_routes
+PERSPECTIVE_API_KEY = os.getenv("PERSPECTIVE_API_KEY")
+register_routes(app, db=db, PERSPECTIVE_API_KEY=PERSPECTIVE_API_KEY)
+
+# --- catch-all for React frontend ---
 @app.route("/", defaults={"path": ""})
 @app.route("/<path:path>")
-def serve(path):
-   
+def serve_react(path):
+    # Only serve React for non-API routes
+    api_prefixes = ["login", "users", "posts", "replies", "polls", "notifications"]
+    if any(path.startswith(p) for p in api_prefixes):
+        return jsonify({"error": "Not found"}), 404
+
+    # Serve static files if they exist
     file_path = os.path.join(app.static_folder, path)
     if path and os.path.exists(file_path):
         return send_from_directory(app.static_folder, path)
 
-    # 3️⃣ Otherwise serve React index.html
+    # Default: serve index.html
     return send_from_directory(app.static_folder, "index.html")
 
-# Perspective API key
-PERSPECTIVE_API_KEY = os.getenv("PERSPECTIVE_API_KEY")
 
-# --- register routes ---
-from routes import register_routes
-register_routes(app, db=db, PERSPECTIVE_API_KEY=PERSPECTIVE_API_KEY)
+
+
 
 
