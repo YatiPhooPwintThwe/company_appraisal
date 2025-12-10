@@ -15,7 +15,7 @@ load_dotenv()
 app = Flask(
     __name__,
     static_folder="statics",     # folder on disk: backend/statics
-    static_url_path="/statics"   # served at http(s)://<host>:<port>/statics/...
+    static_url_path=""   # served at http(s)://<host>:<port>/statics/...
 )
 
 CORS(app)
@@ -37,14 +37,13 @@ migrate = Migrate(app, db)
 backend_dir = os.path.dirname(os.path.abspath(__file__))
 frontend_folder = os.path.join(backend_dir, "..", "frontend")
 dist_folder = os.path.join(frontend_folder, "dist")
-@app.route("/", defaults={"filename": ""})
-@app.route("/<path:filename>")
-def index(filename):
-    file_path = os.path.join(dist_folder, filename)
-    if os.path.exists(file_path):
-        return send_from_directory(dist_folder, filename)
-    # fallback to index.html for SPA
-    return send_from_directory(dist_folder, "index.html")
+@app.route("/", defaults={"path": ""})
+@app.route("/<path:path>")
+def serve(path):
+    file_path = os.path.join(app.static_folder, path)
+    if path and os.path.exists(file_path):
+        return send_from_directory(app.static_folder, path)
+    return send_from_directory(app.static_folder, "index.html")
 
 # Perspective API key
 PERSPECTIVE_API_KEY = os.getenv("PERSPECTIVE_API_KEY")
