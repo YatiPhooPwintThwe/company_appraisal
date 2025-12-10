@@ -16,7 +16,7 @@ import cloudinary.uploader
 
 MAX_CONTENT_LENGTH = 2000
 
-def register_routes(app, db, PERSPECTIVE__KEY):
+def register_routes(app, db, PERSPECTIVE_API_KEY):
     if db is None:
         raise RuntimeError("register_routes requires a SQLAlchemy 'db' parameter")
 
