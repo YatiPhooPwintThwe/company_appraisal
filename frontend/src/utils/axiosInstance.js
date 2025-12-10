@@ -1,10 +1,11 @@
 import axios from "axios";
 
+// Change this to your deployed backend URL
 const api = axios.create({
-  baseURL: "http://127.0.0.1:5000", // NO /api
+  baseURL: "https://appraisal-1lzx.onrender.com", // no /api
 });
 
-// Attach token automatically
+// Attach JWT token automatically if available
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("token");
