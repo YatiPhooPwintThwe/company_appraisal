@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import axios from "axios";
+import axiosInstance from "../utils/axiosInstance.js";
 import toast from "react-hot-toast";
 import { FaImage, FaSmile } from "react-icons/fa";
 import { SiGiphy } from "react-icons/si";
@@ -108,7 +108,7 @@ const ReplyPage = () => {
   useEffect(() => {
     const fetchCurrentUser = async () => {
       try {
-        const res = await axios.get("/api/users/me", {
+        const res = await axiosInstance.get("/api/users/me", {
           headers: authHeaders,
         });
         setCurrentUser(res.data);
@@ -123,8 +123,8 @@ const ReplyPage = () => {
     const fetchPostAndReplies = async () => {
       try {
         const [postRes, repliesRes] = await Promise.all([
-          axios.get(`/api/posts/${postId}`, { headers: authHeaders }),
-          axios.get(`/api/posts/${postId}/replies`, { headers: authHeaders }),
+          axiosInstance.get(`/api/posts/${postId}`, { headers: authHeaders }),
+          axiosInstance.get(`/api/posts/${postId}/replies`, { headers: authHeaders }),
         ]);
         setPost(postRes.data);
         setReplies(repliesRes.data.replies || []);
@@ -144,7 +144,7 @@ const ReplyPage = () => {
     try {
       const formData = new FormData();
       formData.append("image", file);
-      const res = await axios.post("/api/upload", formData, {
+      const res = await axiosInstance.post("/api/upload", formData, {
         headers: authHeaders,
       });
       // res.data.url expected
@@ -199,7 +199,7 @@ const ReplyPage = () => {
       if (gifUrl) fd.append("gif", gifUrl); // send as 'gif' (backend expects 'gif' for form)
       if (deleteGif) fd.append("delete_gif", "true");
 
-      const res = await axios.post("/api/replies", fd, {
+      const res = await axiosInstance.post("/api/replies", fd, {
         headers: authHeaders,
       });
       // server now returns reply JSON including user
@@ -246,7 +246,7 @@ const ReplyPage = () => {
       if (editingGifUrl) fd.append("gif", editingGifUrl);
       else if (editingDeleteGif) fd.append("delete_gif", "true");
 
-      const res = await axios.put(`/api/replies/${replyId}`, fd, {
+      const res = await axiosInstance.put(`/api/replies/${replyId}`, fd, {
         headers: authHeaders,
       });
       setReplies((prev) => prev.map((r) => (r.id === replyId ? res.data : r)));
@@ -269,7 +269,7 @@ const ReplyPage = () => {
   const deleteReply = async (replyId) => {
     if (!confirm("Delete reply?")) return;
     try {
-      await axios.delete(`/api/replies/${replyId}`, { headers: authHeaders });
+      await axiosInstance.delete(`/api/replies/${replyId}`, { headers: authHeaders });
       setReplies((prev) => prev.filter((r) => r.id !== replyId));
       toast.success("Reply deleted");
     } catch (err) {
@@ -280,7 +280,7 @@ const ReplyPage = () => {
 
   const toggleLike = async (replyId) => {
     try {
-      const res = await axios.post(
+      const res = await axiosInstance.post(
         `/api/replies/${replyId}/like`,
         {},
         { headers: authHeaders }

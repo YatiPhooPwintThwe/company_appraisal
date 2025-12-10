@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import axiosInstance from "../utils/axiosInstance.js";
 import toast from "react-hot-toast";
 import { AiOutlineDelete } from "react-icons/ai";
 const CreatePollPage = () => {
@@ -53,7 +53,7 @@ const CreatePollPage = () => {
       return toast.error("Minimum 2 poll options required");
 
     try {
-      await axios.post(
+      await axiosInstance.post(
         "/api/polls",
         {
           title: title.trim(),
