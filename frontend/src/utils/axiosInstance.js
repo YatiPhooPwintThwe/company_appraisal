@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || "/api", // fallback for local dev with proxy
+  baseURL: "/api", // fallback for local dev with proxy
 });
 
 // Attach token automatically
