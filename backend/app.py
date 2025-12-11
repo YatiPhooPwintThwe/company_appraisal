@@ -69,9 +69,9 @@ def serve_react(path):
     # Default: serve index.html
     return send_from_directory(app.static_folder, "index.html")
 
-
+STATICS_FOLDER = os.path.join(os.path.dirname(__file__), "statics")
 @app.route("/statics/<path:filename>")
 def serve_statics(filename):
-    return send_from_directory("backend/statics", filename)
+    return send_from_directory(STATICS_FOLDER, filename)
 if __name__ == "__main__":
     app.run(debug=True, port=5000)
