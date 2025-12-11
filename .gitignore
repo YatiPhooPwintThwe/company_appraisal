@@ -10,8 +10,7 @@ __pycache__/
 # Ignore environment variables
 .env
 
-# Instance folder (databases, config files)
-instance/
+
 
 
 
