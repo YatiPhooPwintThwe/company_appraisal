@@ -45,7 +45,7 @@ const LoginPage = () => {
 
   return (
     <div
-      className="min-h-screen flex items-center justify-center px-4 bg-gray-50"
+      className="flex items-center justify-center w-full h-screen px-4 bg-gray-50"
       style={{
         backgroundImage: `url(${backgroundImg})`,
         backgroundSize: "cover",
@@ -94,7 +94,7 @@ const LoginPage = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-black text-white py-2 sm:py-3 rounded-md disabled:opacity-50 mt-4 sm:mt-6 text-sm sm:text-base"
+            className="w-full bg-black text-white py-2 sm:py-3 rounded-md disabled:opacity-50 text-sm sm:text-base"
           >
             {loading ? "Logging in..." : "Login"}
           </button>
