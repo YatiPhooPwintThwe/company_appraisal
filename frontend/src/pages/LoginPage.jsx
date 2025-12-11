@@ -7,12 +7,7 @@ import api from "../utils/axiosInstance.js";
 
 const LoginPage = () => {
   const navigate = useNavigate();
-
-  const [form, setForm] = useState({
-    login_id: "",
-    password: "",
-  });
-
+  const [form, setForm] = useState({ login_id: "", password: "" });
   const [showPw, setShowPw] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -23,13 +18,10 @@ const LoginPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (!form.login_id.trim() || !form.password.trim()) {
+    if (!form.login_id.trim() || !form.password.trim())
       return toast.error("All fields are required");
-    }
 
     setLoading(true);
-
     try {
       const res = await api.post("/login", form);
       localStorage.setItem("token", res.data.token);
@@ -45,16 +37,15 @@ const LoginPage = () => {
 
   return (
     <div
-      className="flex items-center justify-center w-full h-screen px-4 bg-gray-50"
+      className="flex flex-col items-center justify-center min-h-screen px-4 bg-gray-50"
       style={{
         backgroundImage: `url(${backgroundImg})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}
     >
-      <div className="w-full max-w-sm sm:max-w-md bg-white p-6 sm:p-8 rounded-xl shadow-lg">
+      <div className="w-full max-w-sm sm:max-w-md bg-white p-6 sm:p-8 rounded-xl shadow-lg flex flex-col justify-center">
         <h1 className="text-2xl font-bold text-center mb-6 sm:mb-8">Login</h1>
-
         <form onSubmit={handleSubmit} className="space-y-5 sm:space-y-6">
           <div>
             <label className="block text-sm font-medium mb-2">Username</label>
@@ -66,7 +57,6 @@ const LoginPage = () => {
               className="w-full border rounded-md px-3 py-2 focus:ring-2 focus:ring-black outline-none text-sm sm:text-base"
             />
           </div>
-
           <div>
             <label className="block text-sm font-medium mb-2">Password</label>
             <div className="relative">
@@ -90,7 +80,6 @@ const LoginPage = () => {
               </button>
             </div>
           </div>
-
           <button
             type="submit"
             disabled={loading}
