@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import backgroundImg from "../assets/logo.png";
 import { Eye, EyeOff } from "lucide-react";
 import api from "../utils/axiosInstance.js";
+
 const LoginPage = () => {
   const navigate = useNavigate();
 
@@ -44,15 +45,18 @@ const LoginPage = () => {
 
   return (
     <div
-      className="min-h-screen flex items-center justify-center bg-cover bg-center px-4"
-      style={{ backgroundImage: `url(${backgroundImg})` }}
+      className="min-h-screen flex items-center justify-center px-4 bg-gray-50"
+      style={{
+        backgroundImage: `url(${backgroundImg})`,
+        backgroundSize: "contain",
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "center top",
+      }}
     >
-      <div className="w-full max-w-sm bg-white p-6 rounded-xl shadow-lg ml-[-550px]">
-        {/* Negative margin-left moves the form slightly left */}
+      <div className="w-full max-w-xs sm:max-w-sm md:max-w-md bg-white p-6 sm:p-8 rounded-xl shadow-lg">
+        <h1 className="text-2xl font-bold text-center mb-6 sm:mb-8">Login</h1>
 
-        <h1 className="text-2xl font-bold text-center mb-4">Login</h1>
-
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-5 sm:space-y-6">
           <div>
             <label className="block text-sm font-medium mb-2">Username</label>
             <input
@@ -60,7 +64,7 @@ const LoginPage = () => {
               name="login_id"
               value={form.login_id}
               onChange={handleChange}
-              className="w-full border rounded-md px-3 py-2 focus:ring-2 focus:ring-black outline-none"
+              className="w-full border rounded-md px-3 py-2 focus:ring-2 focus:ring-black outline-none text-sm sm:text-base"
             />
           </div>
 
@@ -72,17 +76,17 @@ const LoginPage = () => {
                 name="password"
                 value={form.password}
                 onChange={handleChange}
-                className="w-full border rounded-md px-3 py-2 focus:ring-2 focus:ring-black outline-none"
+                className="w-full border rounded-md px-3 py-2 focus:ring-2 focus:ring-black outline-none text-sm sm:text-base"
               />
               <button
                 type="button"
                 onClick={() => setShowPw(!showPw)}
-                className="absolute right-2 top-2 text-sm text-gray-600"
+                className="absolute right-2 top-2 text-gray-600"
               >
                 {showPw ? (
-                  <EyeOff className="h-5 w-5 text-base-content/40" />
+                  <EyeOff className="h-5 w-5 text-gray-400" />
                 ) : (
-                  <Eye className="h-5 w-5 text-base-content/40" />
+                  <Eye className="h-5 w-5 text-gray-400" />
                 )}
               </button>
             </div>
@@ -91,7 +95,7 @@ const LoginPage = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-black text-white py-2 rounded-md disabled:opacity-50 mt-10"
+            className="w-full bg-black text-white py-2 sm:py-3 rounded-md disabled:opacity-50 mt-4 sm:mt-6 text-sm sm:text-base"
           >
             {loading ? "Logging in..." : "Login"}
           </button>
