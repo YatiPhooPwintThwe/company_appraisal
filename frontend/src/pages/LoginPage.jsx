@@ -45,15 +45,10 @@ const LoginPage = () => {
 
   return (
     <div
-      className="min-h-screen flex flex-col items-center justify-center px-4 bg-gray-50 overflow-auto"
-      style={{
-        backgroundImage: `url(${backgroundImg})`,
-        backgroundSize: "contain",
-        backgroundRepeat: "no-repeat",
-        backgroundPosition: "center center",
-      }}
+      className="min-h-screen flex flex-col items-center justify-start md:justify-center px-4 bg-gray-50 overflow-auto 
+            md:bg-contain md:bg-no-repeat md:bg-center"
     >
-      <div className="w-full max-w-xs sm:max-w-sm md:max-w-md bg-white p-6 sm:p-8 rounded-xl shadow-lg">
+      <div className="w-full max-w-sm md:max-w-md bg-white p-6 sm:p-8 rounded-xl shadow-lg mt-10 md:mt-0">
         <h1 className="text-2xl font-bold text-center mb-6 sm:mb-8">Login</h1>
 
         <form onSubmit={handleSubmit} className="space-y-5 sm:space-y-6">
