@@ -45,7 +45,7 @@ const LoginPage = () => {
 
   return (
     <div
-      className="min-h-screen flex items-center justify-center px-4 bg-gray-50"
+      className="min-h-screen flex items-center justify-center px-4 sm:px-6 bg-gray-50"
       style={{
         backgroundImage: `url(${backgroundImg})`,
         backgroundSize: "contain",
@@ -53,7 +53,7 @@ const LoginPage = () => {
         backgroundPosition: "center top",
       }}
     >
-      <div className="w-full max-w-xs sm:max-w-sm md:max-w-md bg-white p-6 sm:p-8 rounded-xl shadow-lg">
+      <div className="w-full max-w-xs sm:max-w-sm md:max-w-md bg-white p-6 sm:p-8 rounded-xl shadow-lg mx-auto">
         <h1 className="text-2xl font-bold text-center mb-6 sm:mb-8">Login</h1>
 
         <form onSubmit={handleSubmit} className="space-y-5 sm:space-y-6">
